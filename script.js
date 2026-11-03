@@ -68,3 +68,49 @@ document.addEventListener("click",function(e){
 document.querySelectorAll(".card[tabindex]").forEach(function(c){c.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();c.click()}})});
 render();
 })();
+
+/* contact form + reveal animation */
+(function(){
+var d=document;d.documentElement.classList.add("js");
+var form=d.getElementById("cform");if(!form)return;
+var ENDPOINT=""; // Dán link Formspree / Web3Forms vào đây nếu muốn gửi thẳng, không cần mở app email
+var TO="ngokhai15022008@gmail.com";
+var f={n:d.getElementById("cName"),e:d.getElementById("cMail"),m:d.getElementById("cMsg")};
+var st=d.getElementById("cStatus"),btn=d.getElementById("cSend"),cnt=d.getElementById("cCount"),txt=btn.querySelector(".t");
+function say(t,ok){st.textContent=t;st.className="msg"+(ok?" ok":"")}
+function state(c,t){btn.className="btn solid full send"+(c?" "+c:"");txt.textContent=t}
+f.m.addEventListener("input",function(){cnt.textContent=f.m.value.length+"/500"});
+[f.n,f.e,f.m].forEach(function(i){i.addEventListener("input",function(){i.parentNode.classList.remove("bad")})});
+function done(t,reset){state("done","Đã gửi");say(t,true);if(reset){form.reset();cnt.textContent="0/500"}setTimeout(function(){state("","Gửi tin nhắn")},3500)}
+function fail(){state("","Gửi tin nhắn");say("Chưa gửi được. Bạn thử lại hoặc email trực tiếp cho mình nhé.")}
+form.addEventListener("submit",function(ev){
+  ev.preventDefault();
+  var bad=[];
+  if(!f.n.value.trim())bad.push(f.n);
+  if(!/^\S+@\S+\.\S+$/.test(f.e.value.trim()))bad.push(f.e);
+  if(f.m.value.trim().length<10)bad.push(f.m);
+  [f.n,f.e,f.m].forEach(function(i){i.parentNode.classList.toggle("bad",bad.indexOf(i)>-1)});
+  if(bad.length){
+    say(bad[0]===f.m?"Tin nhắn cần ít nhất 10 ký tự.":bad[0]===f.e?"Email chưa đúng định dạng.":"Vui lòng nhập họ và tên.");
+    form.classList.remove("shake");void form.offsetWidth;form.classList.add("shake");bad[0].focus();return;
+  }
+  var data={name:f.n.value.trim(),email:f.e.value.trim(),message:f.m.value.trim()};
+  state("loading","Đang gửi...");say("");
+  if(ENDPOINT){
+    fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify(data)})
+      .then(function(r){r.ok?done("Đã gửi tin nhắn. Cảm ơn bạn!",true):fail()}).catch(fail);
+  }else{
+    setTimeout(function(){
+      location.href="mailto:"+TO+"?subject="+encodeURIComponent("Liên hệ từ CV: "+data.name)+"&body="+encodeURIComponent(data.message+"\n\n— "+data.name+" ("+data.email+")");
+      done("Đã mở ứng dụng email của bạn. Nhấn Gửi trong đó để hoàn tất.",false);
+    },900);
+  }
+});
+/* reveal on scroll */
+var els=[].slice.call(d.querySelectorAll(".reveal"));
+function show(el,i){el.style.setProperty("--d",(i*0.12)+"s");el.classList.add("in");setTimeout(function(){el.classList.remove("reveal","in");el.style.removeProperty("--d")},900+i*120)}
+if("IntersectionObserver" in window){
+  var k=0,io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){io.unobserve(e.target);show(e.target,k++%4)}})},{threshold:.15});
+  els.forEach(function(el){io.observe(el)});
+}else{els.forEach(show)}
+})();

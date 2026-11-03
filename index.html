@@ -59,13 +59,22 @@
 
   <section id="contact">
     <h2>Liên hệ</h2>
-    <p class="sub">Mình sẵn sàng cho các cơ hội thực tập và việc làm Frontend.</p>
-    <ul class="contact">
-      <li><a class="card" href="mailto:ngokhai15022008@gmail.com"><b>Email</b>ngokhai15022008@gmail.com</a></li>
-      <li><a class="card rd" href="tel:0385206623"><b>Điện thoại</b>0385 206 623</a></li>
-      <li><a class="card" href="https://github.com/nguyenngochai1502" target="_blank" rel="noopener"><b>GitHub</b>nguyenngochai1502</a></li>
-      <li><a class="card rd" href="https://www.linkedin.com/in/nguyenngochai1502" target="_blank" rel="noopener"><b>LinkedIn</b>nguyenngochai1502</a></li>
-    </ul>
+    <p class="sub">Mình sẵn sàng cho các cơ hội thực tập và việc làm Frontend. Gửi tin nhắn cho mình ở form bên dưới.</p>
+    <div class="contact-wrap">
+      <form class="panel cform reveal" id="cform" novalidate>
+        <div class="field"><input id="cName" name="name" placeholder=" " autocomplete="name" required><label for="cName">Họ và tên</label></div>
+        <div class="field"><input id="cMail" name="email" type="email" placeholder=" " autocomplete="email" required><label for="cMail">Email của bạn</label></div>
+        <div class="field"><textarea id="cMsg" name="message" maxlength="500" placeholder=" " required></textarea><label for="cMsg">Nội dung tin nhắn</label><span class="count" id="cCount">0/500</span></div>
+        <p class="msg" id="cStatus" role="status"></p>
+        <button class="btn solid full send" id="cSend" type="submit"><span class="sp"></span><svg class="ck" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 13l4 4L19 7"/></svg><span class="t">Gửi tin nhắn</span></button>
+      </form>
+      <ul class="links">
+        <li><a class="card reveal" href="mailto:ngokhai15022008@gmail.com"><b>Email</b>ngokhai15022008@gmail.com</a></li>
+        <li><a class="card rd reveal" href="tel:0385206623"><b>Điện thoại</b>0385 206 623</a></li>
+        <li><a class="card reveal" href="https://github.com/nguyenngochai1502" target="_blank" rel="noopener"><b>GitHub</b>nguyenngochai1502</a></li>
+        <li><a class="card rd reveal" href="https://www.linkedin.com/in/nguyenngochai1502" target="_blank" rel="noopener"><b>LinkedIn</b>nguyenngochai1502</a></li>
+      </ul>
+    </div>
   </section>
 </main>
 <footer>© 2026 Nguyễn Ngọc Hải. Thiết kế bằng HTML5, CSS3 và JavaScript.</footer>
